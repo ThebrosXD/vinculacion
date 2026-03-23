@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:proto_segui/screens/institucion/perfilInstitucion/perfil_institucion.dart';
 
 import '../../models/vacancy.dart';
 import '../auth/login_gateway_screen.dart';
@@ -93,7 +94,9 @@ class _CompanyMainScreenState extends State<CompanyMainScreen> {
   Future<void> _openCreateVacancy() async {
     final result = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (_) => CreateVacancyScreen(companyName: _companyName)),
+      MaterialPageRoute(
+        builder: (_) => CreateVacancyScreen(companyName: _companyName),
+      ),
     );
 
     if (result is Vacancy) {
@@ -106,7 +109,9 @@ class _CompanyMainScreenState extends State<CompanyMainScreen> {
         SnackBar(
           behavior: SnackBarBehavior.floating,
           duration: const Duration(milliseconds: 1300),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
           content: const Text("Vacante creada y publicada ✅"),
         ),
       );
@@ -118,7 +123,9 @@ class _CompanyMainScreenState extends State<CompanyMainScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
           content: Text("Tienes $_newApplicantsCount nuevos postulantes"),
           duration: const Duration(milliseconds: 1400),
         ),
@@ -128,7 +135,9 @@ class _CompanyMainScreenState extends State<CompanyMainScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
           content: const Text("Sin notificaciones nuevas"),
           duration: const Duration(milliseconds: 1200),
         ),
@@ -141,7 +150,10 @@ class _CompanyMainScreenState extends State<CompanyMainScreen> {
       context: context,
       builder: (ctx) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-        title: const Text("Eliminar vacante", style: TextStyle(fontWeight: FontWeight.w900)),
+        title: const Text(
+          "Eliminar vacante",
+          style: TextStyle(fontWeight: FontWeight.w900),
+        ),
         content: Text("¿Seguro que deseas eliminar '${v.title}'?"),
         actions: [
           TextButton(
@@ -151,7 +163,9 @@ class _CompanyMainScreenState extends State<CompanyMainScreen> {
           FilledButton(
             style: FilledButton.styleFrom(
               backgroundColor: const Color(0xFFE11D48),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14),
+              ),
             ),
             onPressed: () {
               setState(() {
@@ -163,12 +177,17 @@ class _CompanyMainScreenState extends State<CompanyMainScreen> {
                 SnackBar(
                   behavior: SnackBarBehavior.floating,
                   duration: const Duration(milliseconds: 1200),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
+                  ),
                   content: const Text("Vacante eliminada"),
                 ),
               );
             },
-            child: const Text("Eliminar", style: TextStyle(fontWeight: FontWeight.w900)),
+            child: const Text(
+              "Eliminar",
+              style: TextStyle(fontWeight: FontWeight.w900),
+            ),
           ),
         ],
       ),
@@ -192,7 +211,9 @@ class _CompanyMainScreenState extends State<CompanyMainScreen> {
         SnackBar(
           behavior: SnackBarBehavior.floating,
           duration: const Duration(milliseconds: 1200),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
           content: const Text("Vacante actualizada ✨"),
         ),
       );
@@ -236,7 +257,10 @@ class _CompanyMainScreenState extends State<CompanyMainScreen> {
           actions: [
             IconButton(
               tooltip: "Notificaciones",
-              icon: _BadgeIcon(icon: Icons.notifications_none_rounded, count: _newApplicantsCount),
+              icon: _BadgeIcon(
+                icon: Icons.notifications_none_rounded,
+                count: _newApplicantsCount,
+              ),
               onPressed: _openNotifications,
             ),
           ],
@@ -266,14 +290,18 @@ class _CompanyMainScreenState extends State<CompanyMainScreen> {
                     Expanded(
                       child: _StatCard(
                         title: "Postulantes",
-                        value: "${_newApplicantsCount == 0 ? 3 : _newApplicantsCount}",
+                        value:
+                            "${_newApplicantsCount == 0 ? 3 : _newApplicantsCount}",
                         icon: Icons.people_alt_outlined,
                       ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 14),
-                const Text("Acciones rápidas", style: TextStyle(fontWeight: FontWeight.w900, color: _ink)),
+                const Text(
+                  "Acciones rápidas",
+                  style: TextStyle(fontWeight: FontWeight.w900, color: _ink),
+                ),
                 const SizedBox(height: 10),
                 Row(
                   children: [
@@ -282,11 +310,16 @@ class _CompanyMainScreenState extends State<CompanyMainScreen> {
                         onPressed: _openCreateVacancy,
                         style: FilledButton.styleFrom(
                           backgroundColor: _primary,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
                           padding: const EdgeInsets.symmetric(vertical: 14),
                         ),
                         icon: const Icon(Icons.add_rounded),
-                        label: const Text("Crear vacante", style: TextStyle(fontWeight: FontWeight.w900)),
+                        label: const Text(
+                          "Crear vacante",
+                          style: TextStyle(fontWeight: FontWeight.w900),
+                        ),
                       ),
                     ),
                     const SizedBox(width: 12),
@@ -295,11 +328,19 @@ class _CompanyMainScreenState extends State<CompanyMainScreen> {
                         onPressed: () => setState(() => _selectedIndex = 1),
                         style: OutlinedButton.styleFrom(
                           side: const BorderSide(color: _border),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
                           padding: const EdgeInsets.symmetric(vertical: 14),
                         ),
                         icon: const Icon(Icons.list_alt_rounded, color: _ink),
-                        label: const Text("Ver vacantes", style: TextStyle(fontWeight: FontWeight.w900, color: _ink)),
+                        label: const Text(
+                          "Ver vacantes",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w900,
+                            color: _ink,
+                          ),
+                        ),
                       ),
                     ),
                   ],
@@ -321,7 +362,10 @@ class _CompanyMainScreenState extends State<CompanyMainScreen> {
           actions: [
             IconButton(
               tooltip: "Notificaciones",
-              icon: _BadgeIcon(icon: Icons.notifications_none_rounded, count: _newApplicantsCount),
+              icon: _BadgeIcon(
+                icon: Icons.notifications_none_rounded,
+                count: _newApplicantsCount,
+              ),
               onPressed: _openNotifications,
             ),
           ],
@@ -343,23 +387,41 @@ class _CompanyMainScreenState extends State<CompanyMainScreen> {
                     const Expanded(
                       child: Text(
                         "Mis vacantes",
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w900, color: _ink),
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w900,
+                          color: _ink,
+                        ),
                       ),
                     ),
                     FilledButton.icon(
                       onPressed: _openCreateVacancy,
                       style: FilledButton.styleFrom(
                         backgroundColor: _ink,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 14,
+                          vertical: 12,
+                        ),
                       ),
                       icon: const Icon(Icons.add_rounded, size: 20),
-                      label: const Text("Crear", style: TextStyle(fontWeight: FontWeight.w900)),
+                      label: const Text(
+                        "Crear",
+                        style: TextStyle(fontWeight: FontWeight.w900),
+                      ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 10),
-                Text("${_foundVacancies.length} resultado(s)", style: const TextStyle(color: _muted, fontWeight: FontWeight.w700)),
+                Text(
+                  "${_foundVacancies.length} resultado(s)",
+                  style: const TextStyle(
+                    color: _muted,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
               ],
             ),
           ),
@@ -377,18 +439,20 @@ class _CompanyMainScreenState extends State<CompanyMainScreen> {
           SliverPadding(
             padding: const EdgeInsets.fromLTRB(16, 6, 16, 110),
             sliver: SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  final v = _foundVacancies[index];
-                  return _VacancyCard(
-                    vacancy: v,
-                    onOpen: () => Navigator.push(context, MaterialPageRoute(builder: (_) => PostulantesScreen(vacancy: v))),
-                    onEdit: () => _editVacancy(v),
-                    onDelete: () => _deleteVacancy(v),
-                  );
-                },
-                childCount: _foundVacancies.length,
-              ),
+              delegate: SliverChildBuilderDelegate((context, index) {
+                final v = _foundVacancies[index];
+                return _VacancyCard(
+                  vacancy: v,
+                  onOpen: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => PostulantesScreen(vacancy: v),
+                    ),
+                  ),
+                  onEdit: () => _editVacancy(v),
+                  onDelete: () => _deleteVacancy(v),
+                );
+              }, childCount: _foundVacancies.length),
             ),
           ),
       ],
@@ -398,7 +462,21 @@ class _CompanyMainScreenState extends State<CompanyMainScreen> {
   Widget _buildProfileTab() {
     return CustomScrollView(
       slivers: [
-        _solidSliverAppBar(title: "Perfil"),
+        _solidSliverAppBar(
+          title: "Perfil",
+          actions: [
+            IconButton(
+              tooltip: "Editar Perfil",
+              icon: const Icon(Icons.edit_rounded, color: _ink),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const PerfilInstitucion()),
+                );
+              },
+            ),
+          ],
+        ),
         SliverToBoxAdapter(
           child: Padding(
             padding: const EdgeInsets.fromLTRB(16, 12, 16, 110),
@@ -418,15 +496,28 @@ class _CompanyMainScreenState extends State<CompanyMainScreen> {
                     borderRadius: BorderRadius.circular(18),
                     border: Border.all(color: _border),
                     boxShadow: [
-                      BoxShadow(color: Colors.black.withOpacity(.04), blurRadius: 18, offset: const Offset(0, 10)),
+                      BoxShadow(
+                        color: Colors.black.withOpacity(.04),
+                        blurRadius: 18,
+                        offset: const Offset(0, 10),
+                      ),
                     ],
                   ),
                   child: const Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Configuración", style: TextStyle(fontWeight: FontWeight.w900, color: _ink)),
+                      Text(
+                        "Configuración",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w900,
+                          color: _ink,
+                        ),
+                      ),
                       SizedBox(height: 8),
-                      Text("Administra tu cuenta y vacantes publicadas.", style: TextStyle(color: _muted, height: 1.25)),
+                      Text(
+                        "Administra tu cuenta y vacantes publicadas.",
+                        style: TextStyle(color: _muted, height: 1.25),
+                      ),
                     ],
                   ),
                 ),
@@ -438,10 +529,15 @@ class _CompanyMainScreenState extends State<CompanyMainScreen> {
                     onPressed: _logout,
                     style: FilledButton.styleFrom(
                       backgroundColor: const Color(0xFFE11D48),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
                     ),
                     icon: const Icon(Icons.logout_rounded),
-                    label: const Text("Cerrar sesión", style: TextStyle(fontWeight: FontWeight.w900)),
+                    label: const Text(
+                      "Cerrar sesión",
+                      style: TextStyle(fontWeight: FontWeight.w900),
+                    ),
                   ),
                 ),
               ],
@@ -452,7 +548,10 @@ class _CompanyMainScreenState extends State<CompanyMainScreen> {
     );
   }
 
-  SliverAppBar _solidSliverAppBar({required String title, List<Widget> actions = const []}) {
+  SliverAppBar _solidSliverAppBar({
+    required String title,
+    List<Widget> actions = const [],
+  }) {
     return SliverAppBar(
       pinned: true,
       elevation: 0,
@@ -461,7 +560,10 @@ class _CompanyMainScreenState extends State<CompanyMainScreen> {
       surfaceTintColor: _bg,
       shadowColor: Colors.black.withOpacity(.12),
       titleSpacing: 16,
-      title: Text(title, style: const TextStyle(fontWeight: FontWeight.w900, color: _ink)),
+      title: Text(
+        title,
+        style: const TextStyle(fontWeight: FontWeight.w900, color: _ink),
+      ),
       actions: [...actions, const SizedBox(width: 6)],
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(1),
@@ -500,9 +602,16 @@ class _DynamicIslandNavBar extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.white.withOpacity(.90),
                 borderRadius: BorderRadius.circular(26),
-                border: Border.all(color: Colors.black.withOpacity(.85), width: 1.1),
+                border: Border.all(
+                  color: Colors.black.withOpacity(.85),
+                  width: 1.1,
+                ),
                 boxShadow: [
-                  BoxShadow(color: Colors.black.withOpacity(.14), blurRadius: 28, offset: const Offset(0, 12)),
+                  BoxShadow(
+                    color: Colors.black.withOpacity(.14),
+                    blurRadius: 28,
+                    offset: const Offset(0, 12),
+                  ),
                 ],
               ),
               child: NavigationBarTheme(
@@ -512,13 +621,22 @@ class _DynamicIslandNavBar extends StatelessWidget {
                     if (states.contains(MaterialState.selected)) {
                       return IconThemeData(color: cs.primary, size: 26);
                     }
-                    return IconThemeData(color: Colors.black.withOpacity(.70), size: 24);
+                    return IconThemeData(
+                      color: Colors.black.withOpacity(.70),
+                      size: 24,
+                    );
                   }),
                   labelTextStyle: MaterialStateProperty.resolveWith((states) {
                     if (states.contains(MaterialState.selected)) {
-                      return TextStyle(color: cs.primary, fontWeight: FontWeight.w900);
+                      return TextStyle(
+                        color: cs.primary,
+                        fontWeight: FontWeight.w900,
+                      );
                     }
-                    return TextStyle(color: Colors.black.withOpacity(.65), fontWeight: FontWeight.w800);
+                    return TextStyle(
+                      color: Colors.black.withOpacity(.65),
+                      fontWeight: FontWeight.w800,
+                    );
                   }),
                 ),
                 child: NavigationBar(
@@ -528,14 +646,21 @@ class _DynamicIslandNavBar extends StatelessWidget {
                   surfaceTintColor: Colors.transparent,
                   selectedIndex: selectedIndex,
                   onDestinationSelected: onSelect,
-                  labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
+                  labelBehavior:
+                      NavigationDestinationLabelBehavior.onlyShowSelected,
                   destinations: [
                     NavigationDestination(
-                      icon: _BadgeIcon(icon: Icons.home_rounded, count: homeBadge),
+                      icon: _BadgeIcon(
+                        icon: Icons.home_rounded,
+                        count: homeBadge,
+                      ),
                       label: "Home",
                     ),
                     NavigationDestination(
-                      icon: _BadgeIcon(icon: Icons.work_rounded, count: vacanciesBadge),
+                      icon: _BadgeIcon(
+                        icon: Icons.work_rounded,
+                        count: vacanciesBadge,
+                      ),
                       label: "Vacantes",
                     ),
                     const NavigationDestination(
@@ -579,7 +704,11 @@ class _BadgeIcon extends StatelessWidget {
               ),
               child: Text(
                 count > 99 ? "99+" : "$count",
-                style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w900),
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 10,
+                  fontWeight: FontWeight.w900,
+                ),
               ),
             ),
           ),
@@ -630,7 +759,11 @@ class _SearchBarState extends State<_SearchBar> {
         border: Border.all(color: _border),
         borderRadius: BorderRadius.circular(18),
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(.04), blurRadius: 18, offset: const Offset(0, 10)),
+          BoxShadow(
+            color: Colors.black.withOpacity(.04),
+            blurRadius: 18,
+            offset: const Offset(0, 10),
+          ),
         ],
       ),
       child: TextField(
@@ -649,7 +782,10 @@ class _SearchBarState extends State<_SearchBar> {
                   },
                 ),
           border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 14,
+            vertical: 14,
+          ),
         ),
       ),
     );
@@ -683,7 +819,11 @@ class _GradientHero extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(.10), blurRadius: 24, offset: const Offset(0, 12)),
+          BoxShadow(
+            color: Colors.black.withOpacity(.10),
+            blurRadius: 24,
+            offset: const Offset(0, 12),
+          ),
         ],
       ),
       child: Row(
@@ -707,14 +847,22 @@ class _GradientHero extends StatelessWidget {
                   title,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(color: Colors.white.withOpacity(.98), fontWeight: FontWeight.w900, fontSize: 16),
+                  style: TextStyle(
+                    color: Colors.white.withOpacity(.98),
+                    fontWeight: FontWeight.w900,
+                    fontSize: 16,
+                  ),
                 ),
                 const SizedBox(height: 6),
                 Text(
                   subtitle,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(color: Colors.white.withOpacity(.88), fontWeight: FontWeight.w700, height: 1.2),
+                  style: TextStyle(
+                    color: Colors.white.withOpacity(.88),
+                    fontWeight: FontWeight.w700,
+                    height: 1.2,
+                  ),
                 ),
               ],
             ),
@@ -749,7 +897,11 @@ class _StatCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(18),
         border: Border.all(color: _border),
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(.04), blurRadius: 18, offset: const Offset(0, 10)),
+          BoxShadow(
+            color: Colors.black.withOpacity(.04),
+            blurRadius: 18,
+            offset: const Offset(0, 10),
+          ),
         ],
       ),
       child: Row(
@@ -772,9 +924,23 @@ class _StatCard extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title, style: const TextStyle(color: _muted, fontWeight: FontWeight.w800, fontSize: 12)),
+                Text(
+                  title,
+                  style: const TextStyle(
+                    color: _muted,
+                    fontWeight: FontWeight.w800,
+                    fontSize: 12,
+                  ),
+                ),
                 const SizedBox(height: 2),
-                Text(value, style: const TextStyle(color: _ink, fontWeight: FontWeight.w900, fontSize: 18)),
+                Text(
+                  value,
+                  style: const TextStyle(
+                    color: _ink,
+                    fontWeight: FontWeight.w900,
+                    fontSize: 18,
+                  ),
+                ),
               ],
             ),
           ),
@@ -817,7 +983,11 @@ class _VacancyCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(18),
               border: Border.all(color: _border),
               boxShadow: [
-                BoxShadow(color: Colors.black.withOpacity(.03), blurRadius: 16, offset: const Offset(0, 10)),
+                BoxShadow(
+                  color: Colors.black.withOpacity(.03),
+                  blurRadius: 16,
+                  offset: const Offset(0, 10),
+                ),
               ],
             ),
             padding: const EdgeInsets.all(14),
@@ -828,13 +998,29 @@ class _VacancyCard extends StatelessWidget {
                   spacing: 10,
                   runSpacing: 10,
                   children: [
-                    _Tag(icon: Icons.schedule_rounded, text: vacancy.postedDate),
-                    _Tag(icon: Icons.laptop_mac_rounded, text: vacancy.modality),
-                    _Tag(icon: Icons.location_on_rounded, text: vacancy.location),
+                    _Tag(
+                      icon: Icons.schedule_rounded,
+                      text: vacancy.postedDate,
+                    ),
+                    _Tag(
+                      icon: Icons.laptop_mac_rounded,
+                      text: vacancy.modality,
+                    ),
+                    _Tag(
+                      icon: Icons.location_on_rounded,
+                      text: vacancy.location,
+                    ),
                   ],
                 ),
                 const SizedBox(height: 10),
-                Text(vacancy.title, style: const TextStyle(fontWeight: FontWeight.w900, color: _ink, fontSize: 15.5)),
+                Text(
+                  vacancy.title,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w900,
+                    color: _ink,
+                    fontSize: 15.5,
+                  ),
+                ),
                 const SizedBox(height: 4),
                 Text(
                   vacancy.description,
@@ -846,24 +1032,47 @@ class _VacancyCard extends StatelessWidget {
                 Row(
                   children: [
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 8,
+                      ),
                       decoration: BoxDecoration(
                         color: Colors.amber.withOpacity(.14),
                         borderRadius: BorderRadius.circular(999),
-                        border: Border.all(color: Colors.amber.withOpacity(.22)),
+                        border: Border.all(
+                          color: Colors.amber.withOpacity(.22),
+                        ),
                       ),
                       child: Row(
                         children: [
-                          const Icon(Icons.star_rounded, size: 16, color: Colors.amber),
+                          const Icon(
+                            Icons.star_rounded,
+                            size: 16,
+                            color: Colors.amber,
+                          ),
                           const SizedBox(width: 6),
-                          Text(vacancy.rating.toStringAsFixed(1),
-                              style: const TextStyle(fontWeight: FontWeight.w900, color: _ink)),
+                          Text(
+                            vacancy.rating.toStringAsFixed(1),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w900,
+                              color: _ink,
+                            ),
+                          ),
                         ],
                       ),
                     ),
                     const Spacer(),
-                    IconButton(onPressed: onEdit, icon: const Icon(Icons.edit_rounded, color: _primary)),
-                    IconButton(onPressed: onDelete, icon: const Icon(Icons.delete_rounded, color: Color(0xFFE11D48))),
+                    IconButton(
+                      onPressed: onEdit,
+                      icon: const Icon(Icons.edit_rounded, color: _primary),
+                    ),
+                    IconButton(
+                      onPressed: onDelete,
+                      icon: const Icon(
+                        Icons.delete_rounded,
+                        color: Color(0xFFE11D48),
+                      ),
+                    ),
                   ],
                 ),
               ],
@@ -904,7 +1113,11 @@ class _Tag extends StatelessWidget {
               text,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(fontWeight: FontWeight.w900, color: _muted, fontSize: 12.5),
+              style: const TextStyle(
+                fontWeight: FontWeight.w900,
+                color: _muted,
+                fontSize: 12.5,
+              ),
             ),
           ),
         ],
@@ -936,9 +1149,16 @@ class _EmptyState extends StatelessWidget {
           children: [
             Icon(icon, size: 62, color: _muted.withOpacity(.55)),
             const SizedBox(height: 12),
-            Text(title, style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 16)),
+            Text(
+              title,
+              style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 16),
+            ),
             const SizedBox(height: 6),
-            Text(subtitle, style: const TextStyle(color: _muted, height: 1.35), textAlign: TextAlign.center),
+            Text(
+              subtitle,
+              style: const TextStyle(color: _muted, height: 1.35),
+              textAlign: TextAlign.center,
+            ),
           ],
         ),
       ),

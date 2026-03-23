@@ -13,6 +13,7 @@ import '../../network/ug_client.dart';
 import '../../network/ug/ug_models.dart';
 
 import 'professional_profile_screen.dart';
+import '../institucion/Ofertas/ofertas_main_screen.dart';
 
 class ProfessionalMainScreen extends StatefulWidget {
   final Map<String, dynamic>? loginData;
@@ -258,9 +259,21 @@ class _ProfessionalMainScreenState extends State<ProfessionalMainScreen> {
   List<_NavItem> _fallbackNavItems() {
     return [
       _NavItem(label: "Home", icon: Icons.home_rounded, builder: _buildHomeTab),
-      _NavItem(label: "Postulación", icon: Icons.people_alt_rounded, builder: _buildApplicationsTab),
-      _NavItem(label: "Favoritos", icon: Icons.bookmark_rounded, builder: _buildFavoritesTab),
-      _NavItem(label: "Perfil", icon: Icons.person_rounded, builder: _buildProfileTab),
+      _NavItem(
+        label: "Postulación",
+        icon: Icons.people_alt_rounded,
+        builder: _buildApplicationsTab,
+      ),
+      _NavItem(
+        label: "Favoritos",
+        icon: Icons.bookmark_rounded,
+        builder: _buildFavoritesTab,
+      ),
+      _NavItem(
+        label: "Perfil",
+        icon: Icons.person_rounded,
+        builder: _buildProfileTab,
+      ),
     ];
   }
 
@@ -276,13 +289,17 @@ class _ProfessionalMainScreenState extends State<ProfessionalMainScreen> {
 
       Widget builder() {
         if (isIframe) {
-          return _buildPlaceholderTab(title: label, subtitle: "iframe=1 • $routeKey");
+          return _buildPlaceholderTab(
+            title: label,
+            subtitle: "iframe=1 • $routeKey",
+          );
         }
 
         final rk = routeKey.toLowerCase();
 
         if (rk == "menuestudiante/index") return _buildHomeTab();
-        if (rk == "mispostulaciones/mispostulaciones") return _buildApplicationsTab();
+        if (rk == "mispostulaciones/mispostulaciones")
+          return _buildApplicationsTab();
         if (rk == "informacionpersonal/index") return _buildProfileTab();
 
         return _buildPlaceholderTab(title: label, subtitle: routeKey);
@@ -317,11 +334,15 @@ class _ProfessionalMainScreenState extends State<ProfessionalMainScreen> {
       if (_showVacanciesTab) {
         _foundVacancies = k.isEmpty
             ? _allVacancies
-            : _allVacancies.where((v) => v.title.toLowerCase().contains(k)).toList();
+            : _allVacancies
+                  .where((v) => v.title.toLowerCase().contains(k))
+                  .toList();
       } else {
         _foundCompanies = k.isEmpty
             ? _allCompanies
-            : _allCompanies.where((c) => c.name.toLowerCase().contains(k)).toList();
+            : _allCompanies
+                  .where((c) => c.name.toLowerCase().contains(k))
+                  .toList();
       }
     });
   }
@@ -331,12 +352,18 @@ class _ProfessionalMainScreenState extends State<ProfessionalMainScreen> {
       if (_favoriteVacancies.contains(v)) {
         _favoriteVacancies.remove(v);
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Eliminado de favoritos"), duration: Duration(milliseconds: 650)),
+          const SnackBar(
+            content: Text("Eliminado de favoritos"),
+            duration: Duration(milliseconds: 650),
+          ),
         );
       } else {
         _favoriteVacancies.add(v);
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Agregado a favoritos"), duration: Duration(milliseconds: 650)),
+          const SnackBar(
+            content: Text("Agregado a favoritos"),
+            duration: Duration(milliseconds: 650),
+          ),
         );
       }
     });
@@ -365,6 +392,7 @@ class _ProfessionalMainScreenState extends State<ProfessionalMainScreen> {
       context,
       MaterialPageRoute(
         builder: (context) => CvSimulationScreen(
+          cedula: _pCedula,
           nombres: _pNombres,
           apellidos: _pApellidos,
           nacionalidad: "ECUATORIANA",
@@ -411,12 +439,24 @@ class _ProfessionalMainScreenState extends State<ProfessionalMainScreen> {
       title: Align(
         alignment: Alignment.centerLeft,
         child: subtitle == null
-            ? Text(title, style: const TextStyle(fontWeight: FontWeight.w900, color: _ink))
+            ? Text(
+                title,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w900,
+                  color: _ink,
+                ),
+              )
             : Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title, style: const TextStyle(fontWeight: FontWeight.w900, color: _ink)),
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w900,
+                      color: _ink,
+                    ),
+                  ),
                   const SizedBox(height: 2),
                   Text(
                     subtitle,
@@ -483,8 +523,16 @@ class _ProfessionalMainScreenState extends State<ProfessionalMainScreen> {
     final desiredLeft = buttonBottomRight.dx - menuWidth;
     final desiredTop = buttonBottomLeft.dy + 8;
 
-    final left = _safeClamp(desiredLeft, 12, overlaySize.width - menuWidth - 12);
-    final top = _safeClamp(desiredTop, 12, overlaySize.height - menuMaxHeight - 12);
+    final left = _safeClamp(
+      desiredLeft,
+      12,
+      overlaySize.width - menuWidth - 12,
+    );
+    final top = _safeClamp(
+      desiredTop,
+      12,
+      overlaySize.height - menuMaxHeight - 12,
+    );
 
     await showGeneralDialog(
       context: context,
@@ -502,10 +550,22 @@ class _ProfessionalMainScreenState extends State<ProfessionalMainScreen> {
                 child: _GlassModuleMenu(
                   menus: _menus,
                   activeId: _activeMenu!.moduloId,
-                  iconResolver: (fa) => _iconFromFa(fa, fallback: Icons.dashboard_rounded),
+                  iconResolver: (fa) =>
+                      _iconFromFa(fa, fallback: Icons.dashboard_rounded),
                   onPick: (m) {
                     Navigator.of(ctx).pop();
-                    _setActiveMenu(m);
+
+                    if (m.nombre.toLowerCase().contains("institución") ||
+                        m.nombre.toLowerCase().contains("institucion")) {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const OfertasMainScreen(),
+                        ),
+                      );
+                    } else {
+                      _setActiveMenu(m);
+                    }
                   },
                 ),
               ),
@@ -516,13 +576,15 @@ class _ProfessionalMainScreenState extends State<ProfessionalMainScreen> {
       transitionBuilder: (ctx, anim, sec, child) {
         final fade = CurvedAnimation(parent: anim, curve: Curves.easeOutCubic);
 
-        final dy = Tween<double>(begin: -12, end: 0).animate(
-          CurvedAnimation(parent: anim, curve: Curves.easeOutCubic),
-        );
+        final dy = Tween<double>(
+          begin: -12,
+          end: 0,
+        ).animate(CurvedAnimation(parent: anim, curve: Curves.easeOutCubic));
 
-        final scale = Tween<double>(begin: 0.92, end: 1.0).animate(
-          CurvedAnimation(parent: anim, curve: Curves.easeOutBack),
-        );
+        final scale = Tween<double>(
+          begin: 0.92,
+          end: 1.0,
+        ).animate(CurvedAnimation(parent: anim, curve: Curves.easeOutBack));
 
         return FadeTransition(
           opacity: fade,
@@ -544,7 +606,9 @@ class _ProfessionalMainScreenState extends State<ProfessionalMainScreen> {
   @override
   Widget build(BuildContext context) {
     final items = _navItems.isEmpty ? _fallbackNavItems() : _navItems;
-    final safeIndex = (_selectedIndex >= 0 && _selectedIndex < items.length) ? _selectedIndex : 0;
+    final safeIndex = (_selectedIndex >= 0 && _selectedIndex < items.length)
+        ? _selectedIndex
+        : 0;
 
     return WillPopScope(
       onWillPop: () async => false, // 🔒 no retroceder con back
@@ -586,15 +650,24 @@ class _ProfessionalMainScreenState extends State<ProfessionalMainScreen> {
                       color: Colors.red.withOpacity(.92),
                       borderRadius: BorderRadius.circular(14),
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 14,
+                          vertical: 12,
+                        ),
                         child: Row(
                           children: [
-                            const Icon(Icons.error_outline_rounded, color: Colors.white),
+                            const Icon(
+                              Icons.error_outline_rounded,
+                              color: Colors.white,
+                            ),
                             const SizedBox(width: 10),
                             Expanded(
                               child: Text(
                                 _navError!,
-                                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w800,
+                                ),
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -602,7 +675,10 @@ class _ProfessionalMainScreenState extends State<ProfessionalMainScreen> {
                             const SizedBox(width: 10),
                             TextButton(
                               onPressed: _bootstrapNavigation,
-                              child: const Text("Reintentar", style: TextStyle(color: Colors.white)),
+                              child: const Text(
+                                "Reintentar",
+                                style: TextStyle(color: Colors.white),
+                              ),
                             ),
                           ],
                         ),
@@ -625,7 +701,9 @@ class _ProfessionalMainScreenState extends State<ProfessionalMainScreen> {
   // ======================= PAGES =======================
 
   Widget _buildHomeTab() {
-    final moduleName = _activeMenu?.nombre.trim().isNotEmpty == true ? _activeMenu!.nombre : "Inicio";
+    final moduleName = _activeMenu?.nombre.trim().isNotEmpty == true
+        ? _activeMenu!.nombre
+        : "Inicio";
     return CustomScrollView(
       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
       slivers: [
@@ -635,8 +713,11 @@ class _ProfessionalMainScreenState extends State<ProfessionalMainScreen> {
           actions: [
             _buildModulePickerAction(),
             IconButton(
-              onPressed: () => ScaffoldMessenger.of(context)
-                  .showSnackBar(const SnackBar(content: Text("No tienes notificaciones nuevas"))),
+              onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text("No tienes notificaciones nuevas"),
+                ),
+              ),
               icon: const Icon(Icons.notifications_none_rounded, color: _ink),
             ),
           ],
@@ -649,14 +730,24 @@ class _ProfessionalMainScreenState extends State<ProfessionalMainScreen> {
               children: [
                 _SearchBar(
                   controller: _searchController,
-                  hintText: _showVacanciesTab ? "Buscar vacante..." : "Buscar empresa...",
+                  hintText: _showVacanciesTab
+                      ? "Buscar vacante..."
+                      : "Buscar empresa...",
                   onChanged: _runFilter,
                 ),
                 const SizedBox(height: 12),
                 SegmentedButton<bool>(
                   segments: const [
-                    ButtonSegment(value: true, label: Text("Vacantes"), icon: Icon(Icons.work_outline_rounded)),
-                    ButtonSegment(value: false, label: Text("Empresas"), icon: Icon(Icons.apartment_rounded)),
+                    ButtonSegment(
+                      value: true,
+                      label: Text("Vacantes"),
+                      icon: Icon(Icons.work_outline_rounded),
+                    ),
+                    ButtonSegment(
+                      value: false,
+                      label: Text("Empresas"),
+                      icon: Icon(Icons.apartment_rounded),
+                    ),
                   ],
                   selected: {_showVacanciesTab},
                   onSelectionChanged: (s) {
@@ -675,18 +766,30 @@ class _ProfessionalMainScreenState extends State<ProfessionalMainScreen> {
                     children: const [
                       _GhostChip(icon: Icons.place_rounded, label: "Ubicación"),
                       SizedBox(width: 10),
-                      _GhostChip(icon: Icons.laptop_mac_rounded, label: "Modalidad"),
+                      _GhostChip(
+                        icon: Icons.laptop_mac_rounded,
+                        label: "Modalidad",
+                      ),
                       SizedBox(width: 10),
                       _GhostChip(icon: Icons.schedule_rounded, label: "Tiempo"),
                       SizedBox(width: 10),
-                      _GhostChip(icon: Icons.star_rounded, label: "Mejor valoradas"),
+                      _GhostChip(
+                        icon: Icons.star_rounded,
+                        label: "Mejor valoradas",
+                      ),
                     ],
                   ),
                 ),
                 const SizedBox(height: 14),
                 Text(
-                  _showVacanciesTab ? "Recomendadas para ti" : "Empresas destacadas",
-                  style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 14, color: _ink),
+                  _showVacanciesTab
+                      ? "Recomendadas para ti"
+                      : "Empresas destacadas",
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w900,
+                    fontSize: 14,
+                    color: _ink,
+                  ),
                 ),
                 const SizedBox(height: 10),
               ],
@@ -756,11 +859,20 @@ class _ProfessionalMainScreenState extends State<ProfessionalMainScreen> {
             padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
             child: SegmentedButton<bool>(
               segments: const [
-                ButtonSegment(value: true, label: Text("Vacantes"), icon: Icon(Icons.bookmark_outline_rounded)),
-                ButtonSegment(value: false, label: Text("Empresas"), icon: Icon(Icons.corporate_fare_rounded)),
+                ButtonSegment(
+                  value: true,
+                  label: Text("Vacantes"),
+                  icon: Icon(Icons.bookmark_outline_rounded),
+                ),
+                ButtonSegment(
+                  value: false,
+                  label: Text("Empresas"),
+                  icon: Icon(Icons.corporate_fare_rounded),
+                ),
               ],
               selected: {_showFavVacancies},
-              onSelectionChanged: (s) => setState(() => _showFavVacancies = s.first),
+              onSelectionChanged: (s) =>
+                  setState(() => _showFavVacancies = s.first),
             ),
           ),
         ),
@@ -821,7 +933,10 @@ class _ProfessionalMainScreenState extends State<ProfessionalMainScreen> {
     );
   }
 
-  Widget _buildPlaceholderTab({required String title, required String subtitle}) {
+  Widget _buildPlaceholderTab({
+    required String title,
+    required String subtitle,
+  }) {
     return CustomScrollView(
       slivers: [
         _buildSolidSliverAppBar(
@@ -836,7 +951,7 @@ class _ProfessionalMainScreenState extends State<ProfessionalMainScreen> {
             title: "Pantalla pendiente",
             subtitle: subtitle,
           ),
-        )
+        ),
       ],
     );
   }
@@ -879,9 +994,15 @@ class _ProfessionalMainScreenState extends State<ProfessionalMainScreen> {
               children: [
                 Row(
                   children: [
-                    _Tag(text: vacancy.modality, icon: Icons.laptop_mac_rounded),
+                    _Tag(
+                      text: vacancy.modality,
+                      icon: Icons.laptop_mac_rounded,
+                    ),
                     const SizedBox(width: 8),
-                    _Tag(text: vacancy.postedDate, icon: Icons.schedule_rounded),
+                    _Tag(
+                      text: vacancy.postedDate,
+                      icon: Icons.schedule_rounded,
+                    ),
                     const Spacer(),
                     IconButton(
                       visualDensity: VisualDensity.compact,
@@ -896,17 +1017,28 @@ class _ProfessionalMainScreenState extends State<ProfessionalMainScreen> {
                 const SizedBox(height: 8),
                 Text(
                   vacancy.title,
-                  style: const TextStyle(fontSize: 15.5, fontWeight: FontWeight.w900, color: _ink),
+                  style: const TextStyle(
+                    fontSize: 15.5,
+                    fontWeight: FontWeight.w900,
+                    color: _ink,
+                  ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   vacancy.companyName,
-                  style: const TextStyle(fontWeight: FontWeight.w700, color: _primary),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w700,
+                    color: _primary,
+                  ),
                 ),
                 const SizedBox(height: 10),
                 Row(
                   children: [
-                    const Icon(Icons.location_on_rounded, size: 16, color: _muted),
+                    const Icon(
+                      Icons.location_on_rounded,
+                      size: 16,
+                      color: _muted,
+                    ),
                     const SizedBox(width: 6),
                     Expanded(
                       child: Text(
@@ -940,7 +1072,9 @@ class _ProfessionalMainScreenState extends State<ProfessionalMainScreen> {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => CompanyDetailScreen(company: company)),
+              MaterialPageRoute(
+                builder: (context) => CompanyDetailScreen(company: company),
+              ),
             );
           },
           child: Container(
@@ -962,7 +1096,11 @@ class _ProfessionalMainScreenState extends State<ProfessionalMainScreen> {
                   child: Center(
                     child: Text(
                       company.name.substring(0, 1).toUpperCase(),
-                      style: const TextStyle(fontWeight: FontWeight.w900, color: _primary, fontSize: 16),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w900,
+                        color: _primary,
+                        fontSize: 16,
+                      ),
                     ),
                   ),
                 ),
@@ -971,7 +1109,13 @@ class _ProfessionalMainScreenState extends State<ProfessionalMainScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(company.name, style: const TextStyle(fontWeight: FontWeight.w900, color: _ink)),
+                      Text(
+                        company.name,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w900,
+                          color: _ink,
+                        ),
+                      ),
                       const SizedBox(height: 2),
                       Text(
                         "${company.employeeCount} empleados • ${company.location}",
@@ -981,11 +1125,14 @@ class _ProfessionalMainScreenState extends State<ProfessionalMainScreen> {
                       const SizedBox(height: 8),
                       Row(
                         children: [
-                          _Tag(text: company.industry, icon: Icons.business_rounded),
+                          _Tag(
+                            text: company.industry,
+                            icon: Icons.business_rounded,
+                          ),
                           const SizedBox(width: 8),
                           _RatingPill(rating: company.rating),
                         ],
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -995,9 +1142,16 @@ class _ProfessionalMainScreenState extends State<ProfessionalMainScreen> {
                   style: FilledButton.styleFrom(
                     backgroundColor: isFollowed ? Colors.white : _ink,
                     foregroundColor: isFollowed ? _ink : Colors.white,
-                    side: isFollowed ? BorderSide(color: _cardBorder) : BorderSide.none,
-                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                    side: isFollowed
+                        ? BorderSide(color: _cardBorder)
+                        : BorderSide.none,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 10,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
                   ),
                   child: Text(isFollowed ? "Siguiendo" : "Seguir"),
                 ),
@@ -1053,7 +1207,8 @@ class _GlassModuleMenu extends StatelessWidget {
             child: ListView.separated(
               padding: const EdgeInsets.symmetric(vertical: 8),
               itemCount: menus.length,
-              separatorBuilder: (_, __) => Divider(height: 1, color: Colors.black.withOpacity(.08)),
+              separatorBuilder: (_, __) =>
+                  Divider(height: 1, color: Colors.black.withOpacity(.08)),
               itemBuilder: (context, i) {
                 final m = menus[i];
                 final selected = m.moduloId == activeId;
@@ -1061,10 +1216,17 @@ class _GlassModuleMenu extends StatelessWidget {
                 return InkWell(
                   onTap: () => onPick(m),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 10,
+                    ),
                     child: Row(
                       children: [
-                        Icon(iconResolver(m.icono), size: 20, color: selected ? Colors.black : _muted),
+                        Icon(
+                          iconResolver(m.icono),
+                          size: 20,
+                          color: selected ? Colors.black : _muted,
+                        ),
                         const SizedBox(width: 10),
                         Expanded(
                           child: Text(
@@ -1072,13 +1234,20 @@ class _GlassModuleMenu extends StatelessWidget {
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
-                              fontWeight: selected ? FontWeight.w900 : FontWeight.w800,
+                              fontWeight: selected
+                                  ? FontWeight.w900
+                                  : FontWeight.w800,
                               color: Colors.black.withOpacity(.88),
                             ),
                           ),
                         ),
                         const SizedBox(width: 8),
-                        if (selected) const Icon(Icons.check_rounded, size: 20, color: Colors.green),
+                        if (selected)
+                          const Icon(
+                            Icons.check_rounded,
+                            size: 20,
+                            color: Colors.green,
+                          ),
                       ],
                     ),
                   ),
@@ -1139,7 +1308,10 @@ class _DynamicIslandNavBar extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.white.withOpacity(.90),
                 borderRadius: BorderRadius.circular(26),
-                border: Border.all(color: Colors.black.withOpacity(.85), width: 1.2),
+                border: Border.all(
+                  color: Colors.black.withOpacity(.85),
+                  width: 1.2,
+                ),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withOpacity(.14),
@@ -1155,13 +1327,22 @@ class _DynamicIslandNavBar extends StatelessWidget {
                     if (states.contains(MaterialState.selected)) {
                       return IconThemeData(color: cs.primary, size: 26);
                     }
-                    return IconThemeData(color: Colors.black.withOpacity(.70), size: 24);
+                    return IconThemeData(
+                      color: Colors.black.withOpacity(.70),
+                      size: 24,
+                    );
                   }),
                   labelTextStyle: MaterialStateProperty.resolveWith((states) {
                     if (states.contains(MaterialState.selected)) {
-                      return TextStyle(color: cs.primary, fontWeight: FontWeight.w900);
+                      return TextStyle(
+                        color: cs.primary,
+                        fontWeight: FontWeight.w900,
+                      );
                     }
-                    return TextStyle(color: Colors.black.withOpacity(.65), fontWeight: FontWeight.w700);
+                    return TextStyle(
+                      color: Colors.black.withOpacity(.65),
+                      fontWeight: FontWeight.w700,
+                    );
                   }),
                 ),
                 child: NavigationBar(
@@ -1171,7 +1352,8 @@ class _DynamicIslandNavBar extends StatelessWidget {
                   surfaceTintColor: Colors.transparent,
                   selectedIndex: selectedIndex,
                   onDestinationSelected: onSelect,
-                  labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
+                  labelBehavior:
+                      NavigationDestinationLabelBehavior.onlyShowSelected,
                   destinations: destinations,
                 ),
               ),
@@ -1236,7 +1418,11 @@ class _SearchBarState extends State<_SearchBar> {
         border: Border.all(color: _cardBorder),
         borderRadius: BorderRadius.circular(18),
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(.04), blurRadius: 18, offset: const Offset(0, 10)),
+          BoxShadow(
+            color: Colors.black.withOpacity(.04),
+            blurRadius: 18,
+            offset: const Offset(0, 10),
+          ),
         ],
       ),
       child: TextField(
@@ -1255,7 +1441,10 @@ class _SearchBarState extends State<_SearchBar> {
                   },
                 ),
           border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 14,
+            vertical: 14,
+          ),
         ),
       ),
     );
@@ -1284,9 +1473,20 @@ class _GhostChip extends StatelessWidget {
         children: [
           Icon(icon, size: 16, color: _muted),
           const SizedBox(width: 8),
-          Text(label, style: const TextStyle(color: _muted, fontWeight: FontWeight.w700, fontSize: 12)),
+          Text(
+            label,
+            style: const TextStyle(
+              color: _muted,
+              fontWeight: FontWeight.w700,
+              fontSize: 12,
+            ),
+          ),
           const SizedBox(width: 2),
-          const Icon(Icons.keyboard_arrow_down_rounded, size: 18, color: _muted),
+          const Icon(
+            Icons.keyboard_arrow_down_rounded,
+            size: 18,
+            color: _muted,
+          ),
         ],
       ),
     );
@@ -1314,7 +1514,14 @@ class _Tag extends StatelessWidget {
         children: [
           Icon(icon, size: 14, color: _muted),
           const SizedBox(width: 6),
-          Text(text, style: const TextStyle(fontSize: 11.5, fontWeight: FontWeight.w800, color: _muted)),
+          Text(
+            text,
+            style: const TextStyle(
+              fontSize: 11.5,
+              fontWeight: FontWeight.w800,
+              color: _muted,
+            ),
+          ),
         ],
       ),
     );
@@ -1339,7 +1546,10 @@ class _RatingPill extends StatelessWidget {
         children: [
           const Icon(Icons.star_rounded, size: 14, color: Colors.amber),
           const SizedBox(width: 6),
-          Text(r, style: const TextStyle(fontSize: 11.5, fontWeight: FontWeight.w900)),
+          Text(
+            r,
+            style: const TextStyle(fontSize: 11.5, fontWeight: FontWeight.w900),
+          ),
         ],
       ),
     );
@@ -1351,7 +1561,11 @@ class _EmptyState extends StatelessWidget {
   final String title;
   final String subtitle;
 
-  const _EmptyState({required this.icon, required this.title, required this.subtitle});
+  const _EmptyState({
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+  });
 
   static const Color _muted = Color(0xFF64748B);
 
@@ -1365,9 +1579,16 @@ class _EmptyState extends StatelessWidget {
           children: [
             Icon(icon, size: 62, color: _muted.withOpacity(.55)),
             const SizedBox(height: 12),
-            Text(title, style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 16)),
+            Text(
+              title,
+              style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 16),
+            ),
             const SizedBox(height: 6),
-            Text(subtitle, style: const TextStyle(color: _muted, height: 1.35), textAlign: TextAlign.center),
+            Text(
+              subtitle,
+              style: const TextStyle(color: _muted, height: 1.35),
+              textAlign: TextAlign.center,
+            ),
           ],
         ),
       ),
