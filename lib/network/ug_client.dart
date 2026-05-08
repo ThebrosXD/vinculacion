@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:proto_segui/config/config_apis.dart';
 
 import 'jwt_utils.dart';
 import 'token_store.dart';
@@ -10,10 +11,6 @@ import 'ug/ug_endpoints.dart';
 import 'ug/ug_models.dart';
 
 class UgClient {
-  UgClient._internal() : _http = http.Client(), _store = TokenStore() {
-    _authApi = UgAuthApi(_http);
-  }
-
   static final UgClient instance = UgClient._internal();
 
   final http.Client _http;
@@ -23,14 +20,20 @@ class UgClient {
   Future<String>? _refreshing;
 
   // Endpoints OfertaPPE
-  static const String _ppeDatosPersonalesUrl =
-      "https://servicioenlinea.ug.edu.ec/OfertaPPEapi/api/DatosPersonales/ObtieneDatosPersonales";
-  static const String _ppeEducacionUrl =
-      "https://servicioenlinea.ug.edu.ec/OfertaPPEapi/api/Educacion/ObtieneEducacion";
-  static const String _ppeIdiomaUrl =
-      "https://servicioenlinea.ug.edu.ec/OfertaPPEapi/api/Idioma/ObtieneIdioma";
+  late final String _ppeDatosPersonalesUrl;
+  late final String _ppeEducacionUrl;
+  late final String _ppeIdiomaUrl;
 
-  // ------------------ FIX: JSON decode robusto ------------------
+  UgClient._internal() : _http = http.Client(), _store = TokenStore() {
+    _authApi = UgAuthApi(_http);
+
+    _ppeDatosPersonalesUrl =
+        "$apiUrl/OfertaPPEapi/api/DatosPersonales/ObtieneDatosPersonales";
+    _ppeEducacionUrl = "$apiUrl/OfertaPPEapi/api/Educacion/ObtieneEducacion";
+    _ppeIdiomaUrl = "$apiUrl/OfertaPPEapi/api/Idioma/ObtieneIdioma";
+  }
+
+  
 
   dynamic _decodeJsonLoose(String body) {
     dynamic v;
@@ -40,7 +43,7 @@ class UgClient {
       throw Exception("JSON inválido: $e\nBody: $body");
     }
 
-    // Si viene doblemente codificado: jsonDecode devuelve String con { ... } o [ ... ]
+    
     if (v is String) {
       final s = v.trim();
       final looksJson =
@@ -50,19 +53,14 @@ class UgClient {
         try {
           v = jsonDecode(s);
         } catch (_) {
-          // si falla, dejamos el String tal cual
+         
         }
       }
-    }
-
-    return v;
-  }
+    } return v; }
 
   Map<String, dynamic> _asMap(dynamic v, {String where = "respuesta"}) {
     if (v is Map<String, dynamic>) return v;
     if (v is Map) return Map<String, dynamic>.from(v);
-
-    // Algunas APIs a veces responden [ { ... } ]
     if (v is List && v.isNotEmpty && v.first is Map) {
       return Map<String, dynamic>.from(v.first as Map);
     }
