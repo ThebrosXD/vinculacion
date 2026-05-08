@@ -1,12 +1,11 @@
+import 'package:proto_segui/config/config_apis.dart';
+
 class UgEndpoints {
-  static const String base = 'https://servicioenlinea.ug.edu.ec';
+  static final String authLogin =
+      '$apiUrl/ServiciosGeneralesAPI/api/Auth/login';
 
-  static const String authLogin =
-      '$base/ServiciosGeneralesAPI/api/Auth/login';
+  static final String sesionLogin = '$apiUrl/OfertaPPEapi/api/Sesion/Login';
 
-  static const String sesionLogin =
-      '$base/OfertaPPEapi/api/Sesion/Login';
-
-  static const String getData =
-      '$base/ServiciosGeneralesAPI/api/AccesoDatos/GetData';
+  static final String getData =
+      '$apiUrl/ServiciosGeneralesAPI/api/AccesoDatos/GetData';
 }

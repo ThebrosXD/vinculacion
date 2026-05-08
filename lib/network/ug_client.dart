@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:proto_segui/config/config_apis.dart';
 
 import 'jwt_utils.dart';
 import 'token_store.dart';
@@ -10,10 +11,6 @@ import 'ug/ug_endpoints.dart';
 import 'ug/ug_models.dart';
 
 class UgClient {
-  UgClient._internal() : _http = http.Client(), _store = TokenStore() {
-    _authApi = UgAuthApi(_http);
-  }
-
   static final UgClient instance = UgClient._internal();
 
   final http.Client _http;
@@ -23,12 +20,18 @@ class UgClient {
   Future<String>? _refreshing;
 
   // Endpoints OfertaPPE
-  static const String _ppeDatosPersonalesUrl =
-      "https://servicioenlinea.ug.edu.ec/OfertaPPEapi/api/DatosPersonales/ObtieneDatosPersonales";
-  static const String _ppeEducacionUrl =
-      "https://servicioenlinea.ug.edu.ec/OfertaPPEapi/api/Educacion/ObtieneEducacion";
-  static const String _ppeIdiomaUrl =
-      "https://servicioenlinea.ug.edu.ec/OfertaPPEapi/api/Idioma/ObtieneIdioma";
+  late final String _ppeDatosPersonalesUrl;
+  late final String _ppeEducacionUrl;
+  late final String _ppeIdiomaUrl;
+
+  UgClient._internal() : _http = http.Client(), _store = TokenStore() {
+    _authApi = UgAuthApi(_http);
+
+    _ppeDatosPersonalesUrl =
+        "$apiUrl/OfertaPPEapi/api/DatosPersonales/ObtieneDatosPersonales";
+    _ppeEducacionUrl = "$apiUrl/OfertaPPEapi/api/Educacion/ObtieneEducacion";
+    _ppeIdiomaUrl = "$apiUrl/OfertaPPEapi/api/Idioma/ObtieneIdioma";
+  }
 
   
 
